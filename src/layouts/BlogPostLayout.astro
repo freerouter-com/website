@@ -3,29 +3,33 @@ import BlogLayout from './BlogLayout.astro';
 import Icon from '../components/Icon.astro';
 import { render } from 'astro:content';
 import {
-  blogPath,
   formatDate,
   otherLanguage,
   postPath,
   readingTime,
+  sectionPath,
+  sourceOf,
   type Lang,
   type Post,
-} from '../lib/blog';
+} from '../lib/content';
 
 interface Props { lang: Lang; post: Post; translation?: Post; }
 const { lang, post, translation } = Astro.props;
 const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
 const { Content } = await render(post);
 const minutes = readingTime(post.body, lang);
-const switchLang = translation ? postPath(translation) : blogPath(otherLanguage(lang));
+const section = post.section;
+const source = sourceOf(post);
+const switchLang = translation ? postPath(translation) : sectionPath(otherLanguage(lang), section);
 // Each language points at this post's own translation, falling back to that
-// language's blog index when a translation has not been written yet.
+// language's section index when a translation has not been written yet.
 const languagePath = (target: Lang) =>
-  post.lang === target ? postPath(post) : translation ? postPath(translation) : blogPath(target);
+  post.lang === target ? postPath(post) : translation ? postPath(translation) : sectionPath(target, section);
 const alternates = { zh: languagePath('zh'), en: languagePath('en') };
 ---
 <BlogLayout
   lang={lang}
+  section={section}
   title={`${post.data.title} — Free Router`}
   description={post.data.description}
   ogType="article"
@@ -36,12 +40,16 @@ const alternates = { zh: languagePath('zh'), en: languagePath('en') };
 >
   <main id="main">
     <article class="post-article container">
-      <a class="back-link" href={blogPath(lang)}><Icon name="arrowLeft" size={15} />{t('返回博客', 'Back to the blog')}</a>
+      <a class="back-link" href={sectionPath(lang, section)}><Icon name="arrowLeft" size={15} />{section === 'news' ? t('返回新闻', 'Back to the news') : t('返回博客', 'Back to the blog')}</a>
       <header class="post-header">
         <div class="post-meta">
           <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt, lang)}</time>
           <span aria-hidden="true">·</span>
           <span>{minutes} {t('分钟阅读', 'min read')}</span>
+          {source && <span aria-hidden="true">·</span>}
+          {source && (source.url
+            ? <a class="post-source" href={source.url} target="_blank" rel="noopener noreferrer">{source.name}<Icon name="arrowRight" size={12} /></a>
+            : <span class="post-source">{source.name}</span>)}
           {post.data.tags.length > 0 && <span aria-hidden="true">·</span>}
           {post.data.tags.map((tag) => <span class="post-tag">{tag}</span>)}
         </div>

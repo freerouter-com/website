@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { formatDate, postPath, rssPath, sourceOf, type Lang, type Post } from '../lib/content';
+
+interface Props { lang: Lang; posts: Post[]; }
+const { lang, posts } = Astro.props;
+const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
+---
+<main id="main">
+  <section class="blog-hero container">
+    <span class="eyebrow">FREE ROUTER LLM NEWS</span>
+    <h1>{t('大模型的动向。', 'What the model makers shipped.')}</h1>
+    <p>{t('每周挑几条值得知道的大模型消息，并说清楚它们对自建网关意味着什么。', 'A few model releases worth knowing each week — and what they mean if you run your own gateway.')}</p>
+    <a class="text-link" href={rssPath(lang, 'news')}><Icon name="rss" size={16} />{t('订阅 RSS', 'Subscribe via RSS')}</a>
+  </section>
+  <section class="post-list container" aria-label={t('新闻列表', 'News items')}>
+    {posts.map((post) => {
+      const source = sourceOf(post);
+      return (
+      <article class="post-card">
+        <div class="post-card-meta">
+          <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt, lang)}</time>
+          {source && <span class="post-source">{source.name}</span>}
+          {post.data.tags.length > 0 && <span class="post-card-tags">{post.data.tags.join(' · ')}</span>}
+        </div>
+        <h2><a href={postPath(post)}>{post.data.title}</a></h2>
+        <p>{post.data.description}</p>
+        <a class="text-link" href={postPath(post)}>{t('阅读全文', 'Read more')}<Icon name="arrowRight" size={15} /></a>
+      </article>
+      );
+    })}
+    {posts.length === 0 && <p class="news-empty">{t('还没有发布内容。', 'Nothing published yet.')}</p>}
+  </section>
+</main>

@@ -1,0 +1,17 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import NewsList from '../../../components/NewsList.astro';
+import { getPosts } from '../../../lib/content';
+
+const posts = await getPosts('news', 'en');
+---
+<BlogLayout
+  lang="en"
+  section="news"
+  title="LLM News — Free Router"
+  description="A weekly read on the LLM releases, tooling, and ecosystem moves worth knowing — and what they mean if you run your own gateway."
+  languageHref="/news/"
+  alternates={{ zh: '/news/', en: '/en/news/' }}
+>
+  <NewsList lang="en" posts={posts} />
+</BlogLayout>

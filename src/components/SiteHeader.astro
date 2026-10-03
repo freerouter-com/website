@@ -2,9 +2,9 @@
 import Brand from './Brand.astro';
 import Icon from './Icon.astro';
 import ThemePicker from './ThemePicker.astro';
-import { homePath, blogPath, type Lang } from '../lib/blog';
+import { homePath, blogPath, newsPath, type Lang, type Section } from '../lib/content';
 
-interface Props { lang: Lang; languageHref?: string; active?: 'features' | 'how-it-works' | 'quickstart' | 'blog'; }
+interface Props { lang: Lang; languageHref?: string; active?: 'features' | 'how-it-works' | 'quickstart' | Section; }
 const { lang, languageHref, active } = Astro.props;
 const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
 const github = 'https://github.com/Neonity2020/free-router';
@@ -15,6 +15,7 @@ const nav = [
   { key: 'how-it-works', href: `${home}#how-it-works`, label: t('工作原理', 'How it works') },
   { key: 'quickstart', href: `${home}#quickstart`, label: t('快速开始', 'Quickstart') },
   { key: 'blog', href: blogPath(lang), label: t('博客', 'Blog') },
+  { key: 'news', href: newsPath(lang), label: t('LLM 新闻', 'LLM News') },
 ] as const;
 ---
 <a class="skip-link" href="#main">{t('跳转到主要内容', 'Skip to content')}</a>

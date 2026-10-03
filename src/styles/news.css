@@ -1,0 +1,6 @@
+/* News items reuse the post surfaces from blog.css; only the source badge and the
+   hero eyebrow differ. Dark overrides live in theme.css. */
+.post-source{display:inline-flex;align-items:center;gap:4px;font-weight:500;color:#8f7aa8}
+a.post-source:hover{color:var(--purple)}
+.post-card-meta .post-source{border:1px solid var(--border);background:var(--surface);border-radius:4px;padding:1px 8px;font-size:11px;color:#a396b5}
+.news-empty{padding:48px 0;color:var(--muted);font-size:16px}

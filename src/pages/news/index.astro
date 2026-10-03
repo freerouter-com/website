@@ -1,0 +1,17 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import NewsList from '../../components/NewsList.astro';
+import { getPosts } from '../../lib/content';
+
+const posts = await getPosts('news', 'zh');
+---
+<BlogLayout
+  lang="zh"
+  section="news"
+  title="LLM 新闻 — Free Router"
+  description="每周梳理值得关注的大模型发布、工具与生态动态，以及它们对本地网关使用者的意义。"
+  languageHref="/en/news/"
+  alternates={{ zh: '/news/', en: '/en/news/' }}
+>
+  <NewsList lang="zh" posts={posts} />
+</BlogLayout>

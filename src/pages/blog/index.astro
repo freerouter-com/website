@@ -1,9 +1,9 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import PostList from '../../components/PostList.astro';
-import { getPosts } from '../../lib/blog';
+import { getPosts } from '../../lib/content';
 
-const posts = await getPosts('zh');
+const posts = await getPosts('blog', 'zh');
 ---
 <BlogLayout
   lang="zh"

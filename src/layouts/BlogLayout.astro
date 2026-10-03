@@ -1,12 +1,14 @@
 ---
 import '../styles/blog.css';
+import '../styles/news.css';
 import Layout from './Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import type { Lang } from '../lib/blog';
+import { rssPath, type Lang, type Section } from '../lib/content';
 
 interface Props {
   lang: Lang;
+  section?: Section;
   title: string;
   description: string;
   ogType?: 'website' | 'article';
@@ -15,10 +17,18 @@ interface Props {
   languageHref?: string;
   alternates?: { zh?: string; en?: string };
 }
-const { lang, title, description, ogType, publishedAt, updatedAt, languageHref, alternates } = Astro.props;
+// Both sections share one shell; `section` only decides what the header highlights and
+// which feed the document advertises.
+const { lang, section = 'blog', title, description, ogType, publishedAt, updatedAt, languageHref, alternates } = Astro.props;
+const feed = {
+  href: rssPath(lang, section),
+  title: section === 'news'
+    ? (lang === 'zh' ? 'Free Router LLM 新闻' : 'Free Router LLM News')
+    : (lang === 'zh' ? 'Free Router 博客' : 'Free Router Blog'),
+};
 ---
-<Layout lang={lang} title={title} description={description} ogType={ogType} publishedAt={publishedAt} updatedAt={updatedAt} alternates={alternates}>
-  <SiteHeader lang={lang} languageHref={languageHref} active="blog" />
+<Layout lang={lang} title={title} description={description} ogType={ogType} publishedAt={publishedAt} updatedAt={updatedAt} alternates={alternates} feed={feed}>
+  <SiteHeader lang={lang} languageHref={languageHref} active={section} />
   <slot />
   <SiteFooter lang={lang} />
 </Layout>

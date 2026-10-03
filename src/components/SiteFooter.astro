@@ -1,10 +1,10 @@
 ---
 import Brand from './Brand.astro';
-import { blogPath, type Lang } from '../lib/blog';
+import { blogPath, newsPath, type Lang } from '../lib/content';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
 const github = 'https://github.com/Neonity2020/free-router';
 ---
-<footer class="site-footer container"><Brand /><span>{t('为自由构建而生。', 'Made for the freedom to build.')}</span><span class="footer-year">© {new Date().getFullYear()} Free Router</span><a href={github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={github + '#调用'} target="_blank" rel="noopener noreferrer">{t('文档', 'Docs')}</a><a href={blogPath(lang)}>{t('博客', 'Blog')}</a></footer>
+<footer class="site-footer container"><Brand /><span>{t('为自由构建而生。', 'Made for the freedom to build.')}</span><span class="footer-year">© {new Date().getFullYear()} Free Router</span><a href={github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={github + '#调用'} target="_blank" rel="noopener noreferrer">{t('文档', 'Docs')}</a><a href={blogPath(lang)}>{t('博客', 'Blog')}</a><a href={newsPath(lang)}>{t('LLM 新闻', 'LLM News')}</a></footer>

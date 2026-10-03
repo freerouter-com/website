@@ -151,6 +151,8 @@
 [data-theme=dark] .post-tag,
 [data-theme=dark] .back-link { color: #ab93c0; }
 [data-theme=dark] .post-tag { background: var(--surface); border-color: #332c40; }
+[data-theme=dark] .post-source { color: #a08cb9; }
+[data-theme=dark] .post-card-meta .post-source { background: var(--surface); border-color: #332c40; color: #ab93c0; }
 [data-theme=dark] .prose { color: #c3bcd0; }
 [data-theme=dark] .prose strong { color: #e7e2f0; }
 [data-theme=dark] .prose li::marker { color: #7c6c92; }

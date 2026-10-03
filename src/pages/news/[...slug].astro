@@ -3,7 +3,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { getPosts, getTranslation, type Post } from '../../lib/content';
 
 export async function getStaticPaths() {
-  const posts = await getPosts('blog', 'zh');
+  const posts = await getPosts('news', 'zh');
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
 }
 

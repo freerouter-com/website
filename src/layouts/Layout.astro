@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../styles/theme.css';
 import '@fontsource-variable/dm-sans';
 import '@fontsource/ibm-plex-mono/latin-400.css';
+import { rssPath, type Section } from '../lib/content';
 interface Props {
   lang?: 'zh' | 'en';
   title?: string;
@@ -11,6 +12,7 @@ interface Props {
   publishedAt?: Date;
   updatedAt?: Date;
   alternates?: { zh?: string; en?: string };
+  feed?: { href: string; title: string };
 }
 const {
   lang = 'zh',
@@ -20,9 +22,11 @@ const {
   publishedAt,
   updatedAt,
   alternates,
+  feed,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const rss = new URL(lang === 'zh' ? '/blog/rss.xml' : '/en/blog/rss.xml', Astro.site);
+const feedMeta = feed ?? { href: rssPath(lang, 'blog' as Section), title: lang === 'zh' ? 'Free Router 博客' : 'Free Router Blog' };
+const rss = new URL(feedMeta.href, Astro.site);
 // Pages beyond the landing one advertise their own language pair; everything else
 // falls back to the home pages.
 const alternatesZh = alternates?.zh ?? '/';
@@ -59,7 +63,7 @@ const alternatesEn = alternates?.en ?? '/en/';
     {ogType === 'article' && updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical.href} />
-    <link rel="alternate" type="application/rss+xml" title={lang === 'zh' ? 'Free Router 博客' : 'Free Router Blog'} href={rss.href} />
+    <link rel="alternate" type="application/rss+xml" title={feedMeta.title} href={rss.href} />
     <link rel="alternate" hreflang="zh-CN" href={new URL(alternatesZh, Astro.site).href} />
     <link rel="alternate" hreflang="en" href={new URL(alternatesEn, Astro.site).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(alternatesZh, Astro.site).href} />

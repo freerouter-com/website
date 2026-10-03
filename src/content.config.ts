@@ -20,4 +20,23 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const news = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/news',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    publishedAt: z.coerce.date(),
+    updatedAt: z.coerce.date().optional(),
+    // Where the story came from, so a digest can always be traced back.
+    source: z.string(),
+    sourceUrl: z.url().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, news };
