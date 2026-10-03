@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/dm-sans';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+interface Props { lang?: 'zh' | 'en'; title?: string; description?: string; }
+const { lang = 'zh', title = 'Free Router — 你的 AI，自由连接。', description = '一个本地 AI 网关，统一连接 OpenRouter、OpenCode Zen 与 Command Code。多 Key 轮询、自动故障切换、Pi 编程代理，让 AI 调用更简单。' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f9f9fc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="alternate" hreflang="zh-CN" href={new URL('/', Astro.site).href} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site).href} />
+    <title>{title}</title>
+  </head>
+  <body><slot /></body>
+</html>

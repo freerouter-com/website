@@ -1,0 +1,8 @@
+---
+interface Props { light?: boolean; }
+const { light = false } = Astro.props;
+---
+<span class:list={['brand', { 'brand-light': light }]}>
+  <svg viewBox="0 0 32 32" width="30" height="30" fill="none" aria-hidden="true"><path d="M7 25V12a5 5 0 0 1 5-5h13M7 17h17M17 7v18m3-12 5 4-5 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  <span>free<span class="brand-slash">/</span>router<span class="brand-period">.</span></span>
+</span>
