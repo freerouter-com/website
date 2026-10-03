@@ -1,0 +1,16 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import { getPosts } from '../../../lib/blog';
+
+const posts = await getPosts('en');
+---
+<BlogLayout
+  lang="en"
+  title="Blog — Free Router"
+  description="Notes on Free Router gateway configuration, routing behaviour, key rotation, and working local first."
+  languageHref="/blog/"
+  alternates={{ zh: '/blog/', en: '/en/blog/' }}
+>
+  <PostList lang="en" posts={posts} />
+</BlogLayout>

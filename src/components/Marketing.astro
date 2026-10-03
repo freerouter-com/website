@@ -1,7 +1,8 @@
 ---
 import Brand from './Brand.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
 import Icon from './Icon.astro';
-import ThemePicker from './ThemePicker.astro';
 import { Code } from 'astro/components';
 interface Props { lang: 'zh' | 'en'; }
 const { lang } = Astro.props;
@@ -21,26 +22,7 @@ const faqs = [
   { q: t('Pi Agent 能做什么？', 'What can Pi Agent do?'), a: t('Pi Agent 使用已有网关配置，在你指定的工作目录阅读代码、创建和编辑文件、执行命令与测试，也支持停止任务。工具以本机用户权限执行，工作目录不是安全沙箱，因此应在信任的本地环境中使用。', 'Pi Agent uses your existing gateway configuration to read code, create and edit files, and run commands and tests in a chosen directory. Tasks can be stopped. Tools run with your local user permissions; the working directory is not a sandbox, so use it in a trusted local environment.') },
 ];
 ---
-<a class="skip-link" href="#main">{t('跳转到主要内容', 'Skip to content')}</a>
-<header class="site-header">
-  <div class="container header-inner">
-    <a href={lang === 'zh' ? '/' : '/en/'} aria-label="Free Router" class="brand-link"><Brand /></a>
-    <nav class="desktop-nav" aria-label={t('主导航', 'Main navigation')}>
-      <a href="#features">{t('产品功能', 'Features')}</a>
-      <a href="#how-it-works">{t('工作原理', 'How it works')}</a>
-      <a href="#quickstart">{t('快速开始', 'Quickstart')}</a>
-    </nav>
-    <div class="header-actions">
-      <ThemePicker lang={lang} />
-      <a class="language-link" href={lang === 'zh' ? '/en/' : '/'} aria-label={t('Switch to English', '切换到中文')}><Icon name="globe" size={17} /><span>{t('EN', '中文')}</span></a>
-      <a class="github-link" href={github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} /><span>GitHub</span></a>
-      <button class="menu-button" aria-expanded="false" aria-controls="mobile-nav" aria-label={t('打开菜单', 'Open menu')}><Icon name="menu" /></button>
-    </div>
-  </div>
-  <nav id="mobile-nav" class="mobile-nav container" aria-label={t('移动导航', 'Mobile navigation')} hidden>
-    <a href="#features">{t('产品功能', 'Features')}</a><a href="#how-it-works">{t('工作原理', 'How it works')}</a><a href="#quickstart">{t('快速开始', 'Quickstart')}</a>
-  </nav>
-</header>
+<SiteHeader lang={lang} />
 <main id="main">
   <section class="hero container">
     <div class="hero-copy">
@@ -89,22 +71,8 @@ const faqs = [
   <section class="faq-section container"><div class="faq-heading"><span class="eyebrow">GOOD QUESTIONS.</span><h2>{t('你可能想知道。', 'A few things to know.')}</h2><p>{t('关于接口、密钥，以及你的下一步。', 'About the API, your keys, and what’s next.')}</p><a class="text-link" href={github + '/issues'} target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} />{t('在 GitHub 继续交流', 'Join the conversation on GitHub')}</a></div><div class="faq-list">{faqs.map((faq) => <details><summary>{faq.q}<Icon name="chevron" size={18} /></summary><p>{faq.a}</p></details>)}</div></section>
   <section class="closing-section container"><div class="closing-brand" aria-hidden="true"><Brand light /></div><span class="eyebrow">LESS FRICTION. MORE FREEDOM.</span><h2>{t('让好想法，自由发生。', 'Give your ideas room to run.')}</h2><p>{t('从一个本地网关开始，连接你的下一次创造。', 'One local gateway. Whatever you want to build next.')}</p><a class="button button-white" href={github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={19} />{t('在 GitHub 开始', 'Start on GitHub')}</a><span class="closing-meta">{t('开放源码 · 本地运行 · 自由构建', 'Open source · Local first · Free to build')}</span></section>
 </main>
-<footer class="site-footer container"><Brand /><span>{t('为自由构建而生。', 'Made for the freedom to build.')}</span><span class="footer-year">© {new Date().getFullYear()} Free Router</span><a href={github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={github + '#调用'} target="_blank" rel="noopener noreferrer">{t('文档', 'Docs')}</a></footer>
+<SiteFooter lang={lang} />
 <script>
-  import { initThemeControls } from '../scripts/theme';
-  initThemeControls();
-  const menu = document.querySelector<HTMLButtonElement>('.menu-button');
-  const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
-  menu?.addEventListener('click', () => {
-    if (!mobileNav) return;
-    const expanded = menu.getAttribute('aria-expanded') === 'true';
-    menu.setAttribute('aria-expanded', String(!expanded));
-    mobileNav.hidden = expanded;
-  });
-  mobileNav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-    mobileNav.hidden = true;
-    menu?.setAttribute('aria-expanded', 'false');
-  }));
   const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
   const activateTab = (selected: HTMLButtonElement) => {
     tabs.forEach((tab) => {

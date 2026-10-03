@@ -1,0 +1,51 @@
+---
+import Brand from './Brand.astro';
+import Icon from './Icon.astro';
+import ThemePicker from './ThemePicker.astro';
+import { homePath, blogPath, type Lang } from '../lib/blog';
+
+interface Props { lang: Lang; languageHref?: string; active?: 'features' | 'how-it-works' | 'quickstart' | 'blog'; }
+const { lang, languageHref, active } = Astro.props;
+const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
+const github = 'https://github.com/Neonity2020/free-router';
+const home = homePath(lang);
+// Section links stay absolute so the header works identically from the blog.
+const nav = [
+  { key: 'features', href: `${home}#features`, label: t('产品功能', 'Features') },
+  { key: 'how-it-works', href: `${home}#how-it-works`, label: t('工作原理', 'How it works') },
+  { key: 'quickstart', href: `${home}#quickstart`, label: t('快速开始', 'Quickstart') },
+  { key: 'blog', href: blogPath(lang), label: t('博客', 'Blog') },
+] as const;
+---
+<a class="skip-link" href="#main">{t('跳转到主要内容', 'Skip to content')}</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href={home} aria-label="Free Router" class="brand-link"><Brand /></a>
+    <nav class="desktop-nav" aria-label={t('主导航', 'Main navigation')}>
+      {nav.map((item) => <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
+    </nav>
+    <div class="header-actions">
+      <ThemePicker lang={lang} />
+      <a class="language-link" href={languageHref ?? home} aria-label={t('Switch to English', '切换到中文')}><Icon name="globe" size={17} /><span>{t('EN', '中文')}</span></a>
+      <a class="github-link" href={github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} /><span>GitHub</span></a>
+      <button class="menu-button" aria-expanded="false" aria-controls="mobile-nav" aria-label={t('打开菜单', 'Open menu')}><Icon name="menu" /></button>
+    </div>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav container" aria-label={t('移动导航', 'Mobile navigation')} hidden>
+    {nav.map((item) => <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
+  </nav>
+</header>
+<script>
+  const menu = document.querySelector<HTMLButtonElement>('.menu-button');
+  const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
+  menu?.addEventListener('click', () => {
+    if (!mobileNav) return;
+    const expanded = menu.getAttribute('aria-expanded') === 'true';
+    menu.setAttribute('aria-expanded', String(!expanded));
+    mobileNav.hidden = expanded;
+  });
+  mobileNav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+    mobileNav.hidden = true;
+    menu?.setAttribute('aria-expanded', 'false');
+  }));
+</script>

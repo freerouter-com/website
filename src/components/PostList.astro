@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { formatDate, postPath, rssPath, type Lang, type Post } from '../lib/blog';
+
+interface Props { lang: Lang; posts: Post[]; }
+const { lang, posts } = Astro.props;
+const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
+---
+<main id="main">
+  <section class="blog-hero container">
+    <span class="eyebrow">FREE ROUTER BLOG</span>
+    <h1>{t('构建笔记。', 'Notes on building.')}</h1>
+    <p>{t('关于网关配置、路由策略，以及本地优先的一些实践记录。', 'Gateway configuration, routing behaviour, and notes on working local first.')}</p>
+    <a class="text-link" href={rssPath(lang)}><Icon name="rss" size={16} />{t('订阅 RSS', 'Subscribe via RSS')}</a>
+  </section>
+  <section class="post-list container" aria-label={t('文章列表', 'Posts')}>
+    {posts.map((post) => (
+      <article class="post-card">
+        <div class="post-card-meta">
+          <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt, lang)}</time>
+          {post.data.tags.length > 0 && <span class="post-card-tags">{post.data.tags.join(' · ')}</span>}
+        </div>
+        <h2><a href={postPath(post)}>{post.data.title}</a></h2>
+        <p>{post.data.description}</p>
+        <a class="text-link" href={postPath(post)}>{t('阅读全文', 'Read more')}<Icon name="arrowRight" size={15} /></a>
+      </article>
+    ))}
+  </section>
+</main>

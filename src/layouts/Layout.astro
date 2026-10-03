@@ -3,9 +3,30 @@ import '../styles/global.css';
 import '../styles/theme.css';
 import '@fontsource-variable/dm-sans';
 import '@fontsource/ibm-plex-mono/latin-400.css';
-interface Props { lang?: 'zh' | 'en'; title?: string; description?: string; }
-const { lang = 'zh', title = 'Free Router — 你的 AI，自由连接。', description = '一个本地 AI 网关，统一连接 OpenRouter、OpenCode Zen 与 Command Code。多 Key 轮询、自动故障切换、Pi 编程代理，让 AI 调用更简单。' } = Astro.props;
+interface Props {
+  lang?: 'zh' | 'en';
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  alternates?: { zh?: string; en?: string };
+}
+const {
+  lang = 'zh',
+  title = 'Free Router — 你的 AI，自由连接。',
+  description = '一个本地 AI 网关，统一连接 OpenRouter、OpenCode Zen 与 Command Code。多 Key 轮询、自动故障切换、Pi 编程代理，让 AI 调用更简单。',
+  ogType = 'website',
+  publishedAt,
+  updatedAt,
+  alternates,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const rss = new URL(lang === 'zh' ? '/blog/rss.xml' : '/en/blog/rss.xml', Astro.site);
+// Pages beyond the landing one advertise their own language pair; everything else
+// falls back to the home pages.
+const alternatesZh = alternates?.zh ?? '/';
+const alternatesEn = alternates?.en ?? '/en/';
 ---
 <!doctype html>
 <html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
@@ -29,17 +50,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#111116' : '#f9f9fc');
       })();
     </script>
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    {ogType === 'article' && publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
+    {ogType === 'article' && updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical.href} />
-    <link rel="alternate" hreflang="zh-CN" href={new URL('/', Astro.site).href} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site).href} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site).href} />
+    <link rel="alternate" type="application/rss+xml" title={lang === 'zh' ? 'Free Router 博客' : 'Free Router Blog'} href={rss.href} />
+    <link rel="alternate" hreflang="zh-CN" href={new URL(alternatesZh, Astro.site).href} />
+    <link rel="alternate" hreflang="en" href={new URL(alternatesEn, Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternatesZh, Astro.site).href} />
     <title>{title}</title>
   </head>
   <body><slot /></body>
+  <script>
+    import { initThemeControls } from '../scripts/theme';
+    initThemeControls();
+  </script>
 </html>

@@ -1,0 +1,24 @@
+---
+import '../styles/blog.css';
+import Layout from './Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { Lang } from '../lib/blog';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  languageHref?: string;
+  alternates?: { zh?: string; en?: string };
+}
+const { lang, title, description, ogType, publishedAt, updatedAt, languageHref, alternates } = Astro.props;
+---
+<Layout lang={lang} title={title} description={description} ogType={ogType} publishedAt={publishedAt} updatedAt={updatedAt} alternates={alternates}>
+  <SiteHeader lang={lang} languageHref={languageHref} active="blog" />
+  <slot />
+  <SiteFooter lang={lang} />
+</Layout>

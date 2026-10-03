@@ -145,6 +145,18 @@
 [data-theme=dark] .closing-meta { color: #b390c4; }
 [data-theme=dark] .site-footer { color: #9680a8; }
 [data-theme=dark] .site-footer .brand { color: #d0badd; }
+[data-theme=dark] .post-card-meta,
+[data-theme=dark] .post-meta { color: #a08cb9; }
+[data-theme=dark] .post-card-tags,
+[data-theme=dark] .post-tag,
+[data-theme=dark] .back-link { color: #ab93c0; }
+[data-theme=dark] .post-tag { background: var(--surface); border-color: #332c40; }
+[data-theme=dark] .prose { color: #c3bcd0; }
+[data-theme=dark] .prose strong { color: #e7e2f0; }
+[data-theme=dark] .prose li::marker { color: #7c6c92; }
+[data-theme=dark] .prose blockquote { border-left-color: #4a3a5c; }
+[data-theme=dark] .prose code { background: #241d31; border-color: #3a2c48; color: #cbb0e8; }
+[data-theme=dark] .prose pre { background: #1a1721 !important; border-color: #45334f; }
 [data-theme=dark] ::selection { background: #584174; color: #fff; }
 
 @media (max-width: 800px) {
