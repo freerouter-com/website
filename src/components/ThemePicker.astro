@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+interface Props { lang: 'zh' | 'en'; }
+const { lang } = Astro.props;
+const t = (zh: string, en: string) => lang === 'zh' ? zh : en;
+const options = [
+  { value: 'light', icon: 'sun', label: t('亮色', 'Light') },
+  { value: 'dark', icon: 'moon', label: t('暗色', 'Dark') },
+  { value: 'system', icon: 'monitor', label: t('跟随系统', 'System') },
+];
+---
+<details class="theme-picker" data-theme-picker>
+  <summary class="theme-trigger" aria-label={t('外观主题：跟随系统', 'Appearance: System')} data-theme-label={t('外观主题', 'Appearance')}>
+    {options.map((option) => <span class="theme-current-icon" data-theme-icon={option.value} hidden={option.value !== 'system'}><Icon name={option.icon} size={17} /></span>)}
+    <span class="theme-current-label">{t('跟随系统', 'System')}</span>
+    <Icon name="chevron" size={13} class="theme-chevron" />
+  </summary>
+  <div class="theme-options" role="group" aria-label={t('选择外观主题', 'Choose appearance')}>
+    {options.map((option) => <button type="button" data-theme-choice={option.value} aria-pressed={option.value === 'system' ? 'true' : 'false'}><Icon name={option.icon} size={17} /><span>{option.label}</span><Icon name="check" size={16} class="theme-option-check" /></button>)}
+  </div>
+</details>

@@ -1,6 +1,7 @@
 ---
 import Brand from './Brand.astro';
 import Icon from './Icon.astro';
+import ThemePicker from './ThemePicker.astro';
 import { Code } from 'astro/components';
 interface Props { lang: 'zh' | 'en'; }
 const { lang } = Astro.props;
@@ -30,6 +31,7 @@ const faqs = [
       <a href="#quickstart">{t('快速开始', 'Quickstart')}</a>
     </nav>
     <div class="header-actions">
+      <ThemePicker lang={lang} />
       <a class="language-link" href={lang === 'zh' ? '/en/' : '/'} aria-label={t('Switch to English', '切换到中文')}><Icon name="globe" size={17} /><span>{t('EN', '中文')}</span></a>
       <a class="github-link" href={github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} /><span>GitHub</span></a>
       <button class="menu-button" aria-expanded="false" aria-controls="mobile-nav" aria-label={t('打开菜单', 'Open menu')}><Icon name="menu" /></button>
@@ -89,6 +91,8 @@ const faqs = [
 </main>
 <footer class="site-footer container"><Brand /><span>{t('为自由构建而生。', 'Made for the freedom to build.')}</span><span class="footer-year">© {new Date().getFullYear()} Free Router</span><a href={github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={github + '#调用'} target="_blank" rel="noopener noreferrer">{t('文档', 'Docs')}</a></footer>
 <script>
+  import { initThemeControls } from '../scripts/theme';
+  initThemeControls();
   const menu = document.querySelector<HTMLButtonElement>('.menu-button');
   const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
   menu?.addEventListener('click', () => {

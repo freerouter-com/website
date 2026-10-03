@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/theme.css';
 import '@fontsource-variable/dm-sans';
 import '@fontsource/ibm-plex-mono/latin-400.css';
 interface Props { lang?: 'zh' | 'en'; title?: string; description?: string; }
@@ -13,6 +14,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f9f9fc" />
+    <script is:inline>
+      (() => {
+        let preference = 'system';
+        try {
+          const saved = localStorage.getItem('free-router-theme');
+          if (saved === 'light' || saved === 'dark') preference = saved;
+        } catch { /* Browser storage may be unavailable. */ }
+        const dark = preference === 'dark' || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const root = document.documentElement;
+        root.dataset.themePreference = preference;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        root.style.colorScheme = dark ? 'dark' : 'light';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#111116' : '#f9f9fc');
+      })();
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

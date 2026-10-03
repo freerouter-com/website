@@ -28,6 +28,7 @@ npm run preview
 - 三步接入流程
 - Python、cURL、Node.js 代码切换、键盘操作与复制反馈
 - 原生折叠 FAQ、移动端菜单、减弱动画偏好支持
+- 亮色 / 暗色 / 跟随系统外观切换，默认跟随系统，首次渲染前恢复选择，跨页面和标签页同步偏好
 - 页面元数据、canonical、语言链接、站点地图和独立 favicon
 
 内容来自相邻 `free-router` 项目的 README，GitHub 链接指向真实仓库 `Neonity2020/free-router`。图示是说明性示例，不查询或展示实时网关状态。上游定价和额度由提供方决定。
@@ -36,6 +37,7 @@ npm run preview
 
 - `src/components/Marketing.astro`：页面内容、中英文文案、代码示例和交互
 - `src/styles/global.css`：排版、色彩和响应式布局
+- `src/styles/theme.css`、`src/scripts/theme.ts`：暗色配色、系统外观响应和主题偏好
 - `src/layouts/Layout.astro`：SEO 元数据与语言设置
 - `astro.config.mjs`：站点域名与 Astro 配置
 
