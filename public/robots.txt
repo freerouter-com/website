@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://free-router-marketing.adamantpaul.chatgpt.site/sitemap.xml
+Sitemap: https://free-router.com/sitemap.xml
